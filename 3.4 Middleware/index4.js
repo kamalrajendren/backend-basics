@@ -1,24 +1,30 @@
 import express from "express";
-import bodyParser from "body-parser";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
+import bodyParser from "body-parser";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
+console.log("import.meta.url :", import.meta.url);
+console.log("@2", fileURLToPath(import.meta.url));
+console.log("@3", dirname(fileURLToPath(import.meta.url)));
+
 const app = express();
-const portNo = 3000;
+
+let userName = "";
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
+  console.log("__dirname :", __dirname);
   res.sendFile(__dirname + "/public/index.html");
 });
 
-app.post("/submit", (req, res) => {
-  console.log("res", req.body);
-  res.send(`<h1>your name is ${res.body?.street + res.body?.pet}<h1>`);
+app.post("/submit", (req, res, next) => {
+  userName = req.body.street + req.body.pet;
+  res.send(`Welcome ${req.body.street}😊`)
 });
 
-app.listen(portNo, () => {
-  console.log("Hello world");
+app.listen("3000", () => {
+  console.log("Server listening");
 });
